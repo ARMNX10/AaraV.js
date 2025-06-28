@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 const VisitorIP = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [ipAddress, setIpAddress] = useState<string>('');
-  const [displayText, setDisplayText] = useState<string>('LOADING...');
+  const [displayText, setDisplayText] = useState<string>('LOADING');
   const [showWelcome, setShowWelcome] = useState<boolean>(false);
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [isGlitching, setIsGlitching] = useState<boolean>(false);
@@ -14,6 +14,9 @@ const VisitorIP = () => {
   const [error, setError] = useState<string | null>(null);
 
   const fetchIP = useCallback(async () => {
+    // Only run on client side
+    if (typeof window === 'undefined') return;
+    
     try {
       const response = await fetch('https://api64.ipify.org?format=json');
       
@@ -22,33 +25,47 @@ const VisitorIP = () => {
       }
       
       const data = await response.json();
-      setIpAddress(data.ip);
+      const ip = data.ip;
       
-      // Simulate decryption effect
-      const chars = '0123456789ABCDEF';
+      // Validate IP format (simple check for IPv4 or IPv6)
+      if (!/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(:\d+)?$/.test(ip) && 
+          !/^[0-9a-fA-F:]+$/.test(ip)) {
+        throw new Error('Invalid IP format');
+      }
+      
+      setIpAddress(ip);
+      
+      // Simulate decryption effect with proper IP format
+      const chars = '0123456789';
       let counter = 0;
-      const totalIterations = 15;
+      const totalIterations = 10; // Reduced iterations for faster loading
       
       const decryptInterval = setInterval(() => {
-        let result = '';
-        for (let i = 0; i < data.ip.length; i++) {
-          result += chars.charAt(Math.floor(Math.random() * chars.length));
+        // Generate a fake IP in the correct format during loading
+        let fakeIp = '';
+        for (let i = 0; i < 4; i++) {
+          let segment = '';
+          for (let j = 0; j < 3; j++) {
+            segment += chars.charAt(Math.floor(Math.random() * chars.length));
+          }
+          fakeIp += (i < 3) ? segment + '.' : segment;
         }
-        setDisplayText(`> ${result} <`);
+        setDisplayText(fakeIp);
         
         counter++;
         if (counter >= totalIterations) {
           clearInterval(decryptInterval);
-          setDisplayText(`> ${data.ip} <`);
+          setDisplayText(ip);
           setIsLoading(false);
         }
-      }, 40);
+      }, 80); // Slower interval for better visibility
       
       // Safety timeout to ensure loading state is always cleared
       const safetyTimeout = setTimeout(() => {
         clearInterval(decryptInterval);
+        setDisplayText(ip);
         setIsLoading(false);
-      }, 5000);
+      }, 3000); // Reduced timeout to 3 seconds
       
       return () => {
         clearInterval(decryptInterval);
@@ -57,12 +74,15 @@ const VisitorIP = () => {
       
     } catch (err) {
       console.error('Error fetching IP:', err);
-      setDisplayText('> IP HIDDEN <');
+      setDisplayText('IP HIDDEN');
       setIsLoading(false);
     }
   }, []);
 
   useEffect(() => {
+    // Only run on client side
+    if (typeof window === 'undefined') return;
+    
     let colorInterval: NodeJS.Timeout;
     let welcomeTimer: NodeJS.Timeout;
     let fetchTimer: NodeJS.Timeout;
@@ -90,7 +110,7 @@ const VisitorIP = () => {
       clearTimeout(welcomeTimer);
       clearTimeout(fetchTimer);
     };
-  }, [fetchIP]);
+  }, [fetchIP, isLoading]);
 
   // Handle mouse enter/leave for the IP display
   const handleMouseEnter = () => {
@@ -157,7 +177,7 @@ const VisitorIP = () => {
               >
                 <span>Welcome</span>
                 <span className="font-bold">
-                  {ipAddress ? `> ${ipAddress} <` : displayText}
+                  {ipAddress || displayText}
                 </span>
                 <motion.span
                   className="inline-block"
