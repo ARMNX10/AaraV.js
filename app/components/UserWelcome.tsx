@@ -74,7 +74,7 @@ export default function UserWelcome() {
               transition={{ delay: 0.4, duration: 0.5 }}
             >
               <div className="text-2xl md:text-4xl font-mono font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-300">
-                <span className="neon-text">{obfuscatedIP}</span>
+                <span className="neon-text">{connectionInfo?.ip || obfuscatedIP}</span>
               </div>
               <div className="absolute inset-0 bg-green-400/20 blur-2xl -z-10 rounded-full"></div>
             </motion.div>

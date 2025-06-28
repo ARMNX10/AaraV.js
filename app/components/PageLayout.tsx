@@ -2,10 +2,6 @@
 
 import { ReactNode } from 'react';
 import InteractiveBackground from './InteractiveBackground';
-import dynamic from 'next/dynamic';
-
-// Dynamically import UserWelcome with no SSR to avoid hydration issues
-const UserWelcome = dynamic(() => import('./UserWelcome'), { ssr: false });
 
 export default function PageLayout({ children }: { children: ReactNode }) {
   return (
@@ -14,7 +10,6 @@ export default function PageLayout({ children }: { children: ReactNode }) {
         <InteractiveBackground />
       </div>
       <div className="relative z-10">
-        <UserWelcome />
         {children}
         {/* Fade effect at the bottom */}
         <div className="fixed bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/80 to-transparent pointer-events-none"></div>

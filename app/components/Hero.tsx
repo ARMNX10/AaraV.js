@@ -5,6 +5,7 @@ import { ChevronDown, Download, ExternalLink, Github, Linkedin } from 'lucide-re
 import { useRef, useEffect, useState } from 'react'
 import TypewriterEffect from './TypewriterEffect'
 import CorruptedText from './CorruptedText'
+import VisitorIP from './VisitorIP'
 
 export default function Hero() {
   const ref = useRef<HTMLDivElement>(null)
@@ -40,6 +41,7 @@ export default function Hero() {
             className="text-5xl md:text-7xl font-bold mb-6"
           >
             <span className="inline-flex flex-col items-start">
+              <VisitorIP />
               <span className="text-3xl md:text-4xl mb-2 text-gray-400">
                 Hi, I'm
               </span>
