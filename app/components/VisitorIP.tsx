@@ -1,48 +1,20 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const VisitorIP = () => {
-  const [ip, setIp] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [ipAddress, setIpAddress] = useState<string>('');
+  const [displayText, setDisplayText] = useState<string>('LOADING...');
   const [showWelcome, setShowWelcome] = useState<boolean>(false);
-  const [animationComplete, setAnimationComplete] = useState<boolean>(false);
   const [isHovered, setIsHovered] = useState<boolean>(false);
-  const [isLeaving, setIsLeaving] = useState<boolean>(false);
   const [isGlitching, setIsGlitching] = useState<boolean>(false);
   const [isLoadingColor, setIsLoadingColor] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    // Toggle loading color between red and blue
-    const colorInterval = setInterval(() => {
-      if (isLoading) {
-        setIsLoadingColor(prev => !prev);
-      }
-    }, 500);
-    
-    // Show welcome message after initial render
-    const welcomeTimer = setTimeout(() => {
-      setShowWelcome(true);
-      
-      // Start fetching IP after welcome message appears
-      const fetchTimer = setTimeout(() => {
-        fetchIP();
-      }, 1000);
-      
-      return () => clearTimeout(fetchTimer);
-    }, 500);
-    
-    return () => {
-      clearTimeout(welcomeTimer);
-      clearInterval(colorInterval);
-    };
-  }, [isLoading]);
-
-  const fetchIP = async () => {
+  const fetchIP = useCallback(async () => {
     try {
-      setIsLoading(true);
       const response = await fetch('https://api64.ipify.org?format=json');
       
       if (!response.ok) {
@@ -50,43 +22,100 @@ const VisitorIP = () => {
       }
       
       const data = await response.json();
-      setIp(data.ip);
+      setIpAddress(data.ip);
+      
+      // Simulate decryption effect
+      const chars = '0123456789ABCDEF';
+      let counter = 0;
+      const totalIterations = 15;
+      
+      const decryptInterval = setInterval(() => {
+        let result = '';
+        for (let i = 0; i < data.ip.length; i++) {
+          result += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        setDisplayText(`> ${result} <`);
+        
+        counter++;
+        if (counter >= totalIterations) {
+          clearInterval(decryptInterval);
+          setDisplayText(`> ${data.ip} <`);
+          setIsLoading(false);
+        }
+      }, 40);
+      
+      // Safety timeout to ensure loading state is always cleared
+      const safetyTimeout = setTimeout(() => {
+        clearInterval(decryptInterval);
+        setIsLoading(false);
+      }, 5000);
+      
+      return () => {
+        clearInterval(decryptInterval);
+        clearTimeout(safetyTimeout);
+      };
+      
     } catch (err) {
       console.error('Error fetching IP:', err);
-      setError('Unable to fetch IP');
-    } finally {
-      // Add a small delay before marking as done for better UX
-      setTimeout(() => {
-        setIsLoading(false);
-        setAnimationComplete(true);
-      }, 1500);
+      setDisplayText('> IP HIDDEN <');
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    let colorInterval: NodeJS.Timeout;
+    let welcomeTimer: NodeJS.Timeout;
+    let fetchTimer: NodeJS.Timeout;
+
+    // Toggle loading color between red and blue
+    colorInterval = setInterval(() => {
+      if (isLoading) {
+        setIsLoadingColor(prev => !prev);
+      }
+    }, 500);
+    
+    // Show welcome message after initial render
+    welcomeTimer = setTimeout(() => {
+      setShowWelcome(true);
+      
+      // Start fetching IP after welcome message appears
+      fetchTimer = setTimeout(() => {
+        fetchIP();
+      }, 1000);
+    }, 500);
+    
+    // Cleanup all intervals and timeouts on component unmount
+    return () => {
+      clearInterval(colorInterval);
+      clearTimeout(welcomeTimer);
+      clearTimeout(fetchTimer);
+    };
+  }, [fetchIP]);
+
+  // Handle mouse enter/leave for the IP display
+  const handleMouseEnter = () => {
+    if (!isLoading) {
+      setIsHovered(true);
+      setIsGlitching(false);
     }
   };
-
-  // Decrypting text animation
-  const characters = '0123456789ABCDEF';
-  const [displayText, setDisplayText] = useState<string>('000.000.000.000');
   
-  useEffect(() => {
-    if (isLoading && showWelcome) {
-      const interval = setInterval(() => {
-        setDisplayText(prev => {
-          let result = '';
-          for (let i = 0; i < 3; i++) {
-            for (let j = 0; j < 3; j++) {
-              result += characters.charAt(Math.floor(Math.random() * characters.length));
-            }
-            if (i < 2) result += '.';
-          }
-          return result;
-        });
-      }, 50);
-      
-      return () => clearInterval(interval);
-    } else if (ip) {
-      setDisplayText(ip);
-    }
-  }, [isLoading, ip, showWelcome]);
+  const handleMouseLeave = () => {
+    if (isLoading) return;
+    
+    setIsGlitching(true);
+    
+    // Glitch for 800ms, then blur
+    const glitchInterval = setInterval(() => {
+      setIsHovered(prev => !prev);
+    }, 100);
+    
+    setTimeout(() => {
+      clearInterval(glitchInterval);
+      setIsGlitching(false);
+      setIsHovered(false);
+    }, 800);
+  };
 
   if (error) {
     return null; // Don't show anything if there's an error
@@ -106,31 +135,8 @@ const VisitorIP = () => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            onMouseEnter={() => {
-              if (!isLoading) {
-                setIsHovered(true);
-                setIsLeaving(false);
-                setIsGlitching(false);
-              }
-            }}
-            onMouseLeave={() => {
-              if (isLoading) return;
-              
-              setIsLeaving(true);
-              setIsGlitching(true);
-              
-              // Glitch for 800ms, then blur
-              const glitchInterval = setInterval(() => {
-                // Randomly toggle between glitch states
-                setIsHovered(prev => !prev);
-              }, 100);
-              
-              setTimeout(() => {
-                clearInterval(glitchInterval);
-                setIsGlitching(false);
-                setIsHovered(false);
-              }, 800);
-            }}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
           >
             <div className="flex flex-col items-center">
               <motion.div 
@@ -151,7 +157,7 @@ const VisitorIP = () => {
               >
                 <span>Welcome</span>
                 <span className="font-bold">
-                  {displayText}
+                  {ipAddress ? `> ${ipAddress} <` : displayText}
                 </span>
                 <motion.span
                   className="inline-block"
