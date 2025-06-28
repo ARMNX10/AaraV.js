@@ -9,12 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-spring/web": "^10.0.1",
     "autoprefixer": "^10.0.1",
     "framer-motion": "^10.18.0",
     "lucide-react": "^0.263.1",
     "next": "^14.2.29",
     "postcss": "^8",
     "react": "^18",
+    "react-bits": "^1.0.5",
     "react-dom": "^18",
     "react-intersection-observer": "^9.16.0",
     "tailwindcss": "^3.3.0"

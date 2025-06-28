@@ -165,15 +165,33 @@ export default function Experience() {
                             <h4 className={`text-lg font-semibold ${colorClasses.text} mb-2`}>{exp.company}</h4>
                           </div>
                           {exp.link && (
-                            <motion.a
-                              href={exp.link}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className={`p-2 rounded-lg ${colorClasses.accent} ${colorClasses.text} hover:scale-110 transition-transform`}
-                              whileHover={{ rotate: 15 }}
+                            <motion.div 
+                              className="relative group"
+                              initial={{ scale: 1 }}
+                              whileHover={{ scale: 1.1 }}
+                              transition={{ type: 'spring', stiffness: 400, damping: 10 }}
                             >
-                              <ExternalLink className="w-4 h-4" />
-                            </motion.a>
+                              <motion.div 
+                                className="absolute -inset-1 bg-gradient-to-r from-purple-600 to-blue-500 rounded-lg blur"
+                                animate={{
+                                  opacity: [0.3, 0.7, 0.3],
+                                }}
+                                transition={{
+                                  duration: 2,
+                                  repeat: Infinity,
+                                  ease: 'easeInOut',
+                                }}
+                              />
+                              <motion.a
+                                href={exp.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={`relative p-2 rounded-lg ${colorClasses.accent} ${colorClasses.text} flex items-center justify-center`}
+                                whileHover={{ rotate: 15 }}
+                              >
+                                <ExternalLink className="w-4 h-4" />
+                              </motion.a>
+                            </motion.div>
                           )}
                         </div>
 

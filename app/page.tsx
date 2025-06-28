@@ -1,6 +1,5 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import About from './components/About'
@@ -9,34 +8,22 @@ import Projects from './components/Projects'
 import Skills from './components/Skills'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
-import LoadingScreen from './components/LoadingScreen'
-import MatrixBackground from './components/MatrixBackground'
+import SplashCursor from './components/SplashCursor'
 
 export default function Home() {
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false)
-    }, 2000)
-
-    return () => clearTimeout(timer)
-  }, [])
-
-  if (loading) {
-    return <LoadingScreen />
-  }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-indigo-950 to-gray-900">
-      <MatrixBackground />
+    <main className="min-h-screen bg-[#060010] text-white">
+      <SplashCursor />
       <Navbar />
-      <Hero />
-      <About />
-      <Experience />
-      <Projects />
-      <Skills />
-      <Contact />
+      <div className="container mx-auto px-4">
+        <Hero />
+        <About />
+        <Experience />
+        <Projects />
+        <Skills />
+        <Contact />
+      </div>
       <Footer />
     </main>
   )

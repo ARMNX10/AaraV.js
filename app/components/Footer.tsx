@@ -47,147 +47,77 @@ export default function Footer() {
   }
 
   return (
-    <footer className="bg-gray-900 border-t border-gray-800">
+    <footer className="bg-[#0a001a] border-t border-gray-800 mt-20 relative z-20">
       {/* Main Footer Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid md:grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand Section */}
-          <motion.div
-            className="md:col-span-2"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
+          <div className="col-span-1 md:col-span-2">
             <div className="flex items-center space-x-2 mb-4">
-              <Terminal className="w-8 h-8 text-blue-500" />
-              <span className="text-2xl font-bold gradient-text font-mono">
-                AARAV.MAAN
+              <Terminal className="text-[#7639e9] w-8 h-8" />
+              <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#7639e9] to-[#9c64f7]">
+                Aarav Maan
               </span>
             </div>
-            <p className="text-gray-400 leading-relaxed mb-6 max-w-md">
-              AI Engineer passionate about building innovative solutions with cutting-edge 
-              technology. Specializing in Machine Learning, LangChain, and intelligent automation.
+            <p className="text-gray-400 text-sm max-w-md">
+              Building intelligent solutions and pushing the boundaries of AI and machine learning.
             </p>
-            <div className="flex items-center space-x-2 text-gray-500 text-sm">
-              <Code2 className="w-4 h-4" />
-              <span>Built with Next.js, Tailwind CSS & Framer Motion</span>
-            </div>
-          </motion.div>
+          </div>
 
-          {/* Quick Links */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            viewport={{ once: true }}
-          >
+          <div>
             <h3 className="text-white font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
-              {quickLinks.map((link, index) => (
-                <motion.li
+              {quickLinks.map((link) => (
+                <motion.li 
                   key={link.name}
-                  initial={{ opacity: 0, x: -10 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3, delay: 0.4 + index * 0.1 }}
-                  viewport={{ once: true }}
+                  whileHover={{ x: 5 }}
+                  transition={{ type: 'spring', stiffness: 300 }}
                 >
                   <button
                     onClick={() => scrollToSection(link.href)}
-                    className="text-gray-400 hover:text-white transition-colors duration-200 flex items-center group"
+                    className="text-gray-400 hover:text-[#9c64f7] transition-colors text-sm flex items-center"
                   >
-                    <span className="w-0 group-hover:w-2 h-0.5 bg-blue-500 mr-0 group-hover:mr-2 transition-all duration-200"></span>
-                    {link.name}
+                    <span className="mr-2">→</span> {link.name}
                   </button>
                 </motion.li>
               ))}
             </ul>
-          </motion.div>
+          </div>
 
-          {/* Contact Info */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            viewport={{ once: true }}
-          >
-            <h3 className="text-white font-semibold mb-4">Get In Touch</h3>
-            <div className="space-y-3">
-              <motion.a
-                href="mailto:aaravmaan24@gmail.com"
-                className="flex items-center text-gray-400 hover:text-green-400 transition-colors group"
-                whileHover={{ x: 5 }}
-              >
-                <Mail className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
-                <span className="text-sm">aaravmaan24@gmail.com</span>
-              </motion.a>
-              {/* <motion.a
-                href="tel:+917303233187"
-                className="flex items-center text-gray-400 hover:text-yellow-400 transition-colors group"
-                whileHover={{ x: 5 }}
-              >
-                <Phone className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
-                <span className="text-sm">+91 7303233187</span>
-              </motion.a> */}
-              <div className="text-gray-400 text-sm">
-                <span>Gurugram, Haryana, India</span>
-              </div>
+          <div>
+            <h3 className="text-white font-semibold mb-4">Connect</h3>
+            <div className="flex space-x-4">
+              {socialLinks.map((link) => (
+                <motion.a
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`inline-flex items-center justify-center w-10 h-10 rounded-full bg-gray-800 text-gray-300 hover:text-white transition-all ${link.color}`}
+                  aria-label={link.label}
+                  whileHover={{ scale: 1.1, backgroundColor: 'rgba(118, 57, 233, 0.2)' }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <link.icon className="w-5 h-5" />
+                </motion.a>
+              ))}
             </div>
-
-            {/* Social Links */}
-            <div className="mt-6">
-              <h4 className="text-white font-medium mb-3">Follow Me</h4>
-              <div className="flex space-x-3">
-                {socialLinks.map((social, index) => (
-                  <motion.a
-                    key={social.label}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`text-gray-400 ${social.color} transition-all duration-200 p-2 rounded-lg hover:bg-gray-800/50`}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.3, delay: 0.6 + index * 0.1 }}
-                    viewport={{ once: true }}
-                    whileHover={{ scale: 1.1, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <social.icon className="w-5 h-5" />
-                  </motion.a>
-                ))}
-              </div>
-            </div>
-          </motion.div>
+          </div>
         </div>
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            {/* Copyright */}
-            <motion.div
-              className="flex items-center text-gray-500 text-sm"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-            >
-              <span>© {currentYear} Aarav Maan. Made with</span>
-              <motion.div
-                className="mx-1"
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{ duration: 1, repeat: Infinity, repeatDelay: 2 }}
-              >
-                <Heart className="w-4 h-4 text-red-500 fill-current" />
-              </motion.div>
-              <span>& lots of coffee</span>
-            </motion.div>
-
-            {/* Back to Top */}
+      <div className="border-t border-gray-800 mt-12 pt-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <p className="text-gray-400 text-sm">
+              &copy; {currentYear} Aarav Maan. All rights reserved.
+            </p>
+            
+            {/* Single Back to Top Button */}
             <motion.button
               onClick={scrollToTop}
-              className="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors duration-200 group"
+              className="flex items-center space-x-2 text-gray-400 hover:text-[#9c64f7] transition-colors duration-200 group mt-4 md:mt-0"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
@@ -203,28 +133,35 @@ export default function Footer() {
       </div>
 
       {/* Floating Matrix Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {Array.from({ length: 10 }).map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute text-blue-500/10 font-mono text-xs"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              y: [-10, 10, -10],
-              opacity: [0.1, 0.3, 0.1],
-            }}
-            transition={{
-              duration: 4 + Math.random() * 2,
-              repeat: Infinity,
-              delay: Math.random() * 2,
-            }}
-          >
-            {['01', '10', 'AI', 'ML', '{}', '<>', '//', '&&'][Math.floor(Math.random() * 8)]}
-          </motion.div>
-        ))}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
+        {Array.from({ length: 10 }).map((_, i) => {
+          // Use a consistent seed based on the index
+          const seed = i % 8;
+          const matrixChars = ['01', '10', 'AI', 'ML', '{}', '<>', '//', '&&'];
+          
+          return (
+            <motion.div
+              key={i}
+              className="absolute text-blue-500/10 font-mono text-xs"
+              style={{
+                left: `${(i * 97) % 90 + 5}%`, // Deterministic positioning
+                top: `${(i * 149) % 90 + 5}%`,
+              }}
+              initial={{ opacity: 0.1 }}
+              animate={{
+                y: [0, 20, 0],
+                opacity: [0.1, 0.3, 0.1],
+              }}
+              transition={{
+                duration: 4 + (i % 3) * 2, // More deterministic timing
+                repeat: Infinity,
+                delay: (i % 4) * 0.5,
+              }}
+            >
+              {matrixChars[seed]}
+            </motion.div>
+          );
+        })}
       </div>
     </footer>
   )

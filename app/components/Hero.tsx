@@ -1,9 +1,10 @@
 'use client'
 
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { ChevronDown, Download, ExternalLink, Github, Linkedin, Mail } from 'lucide-react'
-import { useRef } from 'react'
+import { ChevronDown, Download, ExternalLink, Github, Linkedin } from 'lucide-react'
+import { useRef, useEffect, useState } from 'react'
 import TypewriterEffect from './TypewriterEffect'
+import CorruptedText from './CorruptedText'
 
 export default function Hero() {
   const ref = useRef<HTMLDivElement>(null)
@@ -36,13 +37,21 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600"
+            className="text-5xl md:text-7xl font-bold mb-6"
           >
-            <span className="inline-flex items-baseline">
-              Hi, I'm&nbsp;
-              <span className="inline-block align-middle leading-tight py-1">
+            <span className="inline-flex flex-col items-start">
+              <span className="text-3xl md:text-4xl mb-2 text-gray-400">
+                Hi, I'm
+              </span>
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#7639e9] to-[#9c64f7]">
+                <CorruptedText 
+                  text="Aarav Maan" 
+                  intervalDuration={50}
+                />
+              </span>
+              <span className="text-2xl md:text-3xl mt-4 text-gray-300">
                 <TypewriterEffect 
-                  words={['an AI Engineer', 'a Machine Learning Developer', 'a Software Engineer', 'a nerd...']} 
+                  words={['AI Engineer', 'Machine Learning Developer', 'Software Engineer', 'Tech Enthusiast']} 
                   speed={50}
                   deleteSpeed={30}
                   delayBetweenWords={1000}
@@ -55,9 +64,9 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto"
+            className="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto font-mono"
           >
-            || RESEARCH - CODE - DEBUG ||
+            // RESEARCH - CODE - DEBUG
           </motion.p>
           
           <motion.div
@@ -92,31 +101,28 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.6 }}
             className="flex justify-center gap-6"
           >
-            <a
-              href="https://github.com/yourusername"
+            <motion.a
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              href="https://github.com/ARMNX10"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-colors"
+              className="relative inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-800 text-gray-300 hover:bg-[#7639e9] hover:text-white transition-all duration-300 cursor-pointer"
               aria-label="GitHub"
             >
-              <Github size={24} />
-            </a>
-            <a
-              href="https://linkedin.com/in/yourusername"
+              <Github className="w-6 h-6" />
+            </motion.a>
+            <motion.a
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              href="https://linkedin.com/in/aaravmaan"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-colors"
+              className="relative inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-800 text-gray-300 hover:bg-[#0a66c2] hover:text-white transition-all duration-300 cursor-pointer"
               aria-label="LinkedIn"
             >
-              <Linkedin size={24} />
-            </a>
-            <a
-              href="mailto:your.email@example.com"
-              className="text-gray-400 hover:text-white transition-colors"
-              aria-label="Email"
-            >
-              <Mail size={24} />
-            </a>
+              <Linkedin className="w-6 h-6" />
+            </motion.a>
           </motion.div>
         </div>
       </div>

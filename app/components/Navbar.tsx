@@ -38,12 +38,12 @@ export default function Navbar() {
     <motion.nav
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         scrolled 
-          ? 'bg-gray-900/95 backdrop-blur-md border-b border-gray-800' 
+          ? 'bg-[#0a001a]/95 backdrop-blur-md border-b border-gray-800' 
           : 'bg-transparent'
       }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      transition={{ duration: 0.6 }}
+      transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
@@ -53,28 +53,33 @@ export default function Navbar() {
             whileHover={{ scale: 1.05 }}
             onClick={() => scrollToSection('#home')}
           >
-            <Terminal className="w-8 h-8 text-blue-500" />
-            <span className="text-xl font-bold gradient-text font-mono">
-              AARAV.MAAN
-            </span>
+            <div className="flex items-center">
+              <Terminal className="h-8 w-8 text-[#7639e9] mr-2" />
+              <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#7639e9] to-[#9c64f7]">
+                A.R.M.N.X
+              </span>
+            </div>
           </motion.div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-4">
+            <div className="hidden md:flex space-x-6">
               {navItems.map((item, index) => (
-                <motion.button
+                <motion.div
                   key={item.name}
-                  className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 relative group"
-                  onClick={() => scrollToSection(item.href)}
-                  initial={{ opacity: 0, y: -20 }}
+                  initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
-                  whileHover={{ scale: 1.1 }}
+                  transition={{ delay: 0.1 * index }}
+                  className="relative group"
                 >
-                  {item.name}
-                  <span className="absolute inset-x-0 bottom-0 h-0.5 bg-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
-                </motion.button>
+                  <button
+                    onClick={() => scrollToSection(item.href)}
+                    className="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors duration-200 relative"
+                  >
+                    {item.name}
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-[#7639e9] to-[#9c64f7] transition-all duration-300 group-hover:w-full"></span>
+                  </button>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -82,11 +87,17 @@ export default function Navbar() {
           {/* Mobile menu button */}
           <div className="md:hidden">
             <motion.button
-              className="text-gray-400 hover:text-white focus:outline-none focus:text-white"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
               onClick={() => setIsOpen(!isOpen)}
-              whileTap={{ scale: 0.95 }}
+              className="md:hidden text-gray-300 hover:text-white focus:outline-none p-2 rounded-full hover:bg-gray-800/50 transition-colors"
+              aria-label="Toggle menu"
             >
-              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {isOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
             </motion.button>
           </div>
         </div>
@@ -96,25 +107,28 @@ export default function Navbar() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="md:hidden"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+            className="md:hidden bg-[#0a001a]/95 backdrop-blur-md overflow-hidden border-t border-gray-800"
           >
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gray-900/95 backdrop-blur-md border-b border-gray-800">
+            <div className="px-4 pt-2 pb-6 space-y-1">
               {navItems.map((item, index) => (
-                <motion.button
+                <motion.div
                   key={item.name}
-                  className="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium w-full text-left transition-colors duration-200"
-                  onClick={() => scrollToSection(item.href)}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
-                  whileTap={{ scale: 0.95 }}
+                  initial={{ x: -20, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: 0.05 * index }}
                 >
-                  {item.name}
-                </motion.button>
+                  <button
+                    onClick={() => scrollToSection(item.href)}
+                    className="block w-full text-left px-4 py-3 text-base font-medium text-gray-300 hover:bg-[#7639e9]/20 rounded-md transition-all duration-200 hover:pl-6 flex items-center"
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#7639e9] mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                    {item.name}
+                  </button>
+                </motion.div>
               ))}
             </div>
           </motion.div>

@@ -94,8 +94,8 @@ export default function About() {
                   contributing to improved user experience across multiple projects.
                 </p>
                 <p>
-                  Currently pursuing B.Tech in Computer Science Engineering with IoT specialization 
-                  at <span className="text-yellow-400 font-semibold">VIT Vellore</span>, maintaining 
+                  Pursued B.Tech in <b>Computer Science Engineering with IoT</b> specialization 
+                  at <span className="text-yellow-400 font-semibold">VIT Vellore</span>, maintained 
                   First Division academic performance while actively engaging in practical AI research.
                 </p>
               </div>
