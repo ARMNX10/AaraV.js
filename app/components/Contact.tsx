@@ -112,25 +112,7 @@ export default function Contact() {
               ))}
             </div>
 
-            <div className="pt-4">
-              <h4 className="text-white font-medium mb-4">Connect with me</h4>
-              <div className="flex flex-wrap gap-3">
-                {socialLinks.map((social, index) => (
-                  <motion.a
-                    key={index}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`p-3 rounded-full bg-gray-900/70 text-gray-300 transition-all ${social.hoverColor || ''}`}
-                    whileHover={{ y: -3, scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                    aria-label={social.label}
-                  >
-                    <social.icon className="w-5 h-5" />
-                  </motion.a>
-                ))}
-              </div>
-            </div>
+            
           </motion.div>
 
           {/* Connect Card */}
