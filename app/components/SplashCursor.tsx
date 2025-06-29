@@ -36,50 +36,61 @@ export default function SplashCursor() {
     };
   }, []);
   
-  const createParticles = (x: number, y: number) => {
+  const createParticles = (clientX: number, clientY: number) => {
     const colors = ['#7639e9', '#9c64f7', '#b78aff', '#d1b3ff'];
-    const particleCount = 15;
+    const particleCount = 12;
+    const maxDistance = 40;
+    const duration = 800;
     
     for (let i = 0; i < particleCount; i++) {
       const particle = document.createElement('div');
-      const size = Math.random() * 10 + 5;
+      const size = Math.random() * 8 + 4;
       
-      particle.style.position = 'fixed';
-      particle.style.width = `${size}px`;
-      particle.style.height = `${size}px`;
-      particle.style.borderRadius = '50%';
-      particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-      particle.style.pointerEvents = 'none';
-      particle.style.zIndex = '9999';
-      particle.style.left = `${x}px`;
-      particle.style.top = `${y}px`;
+      // Calculate angle for this particle (evenly distributed in a circle)
+      const angle = (i / particleCount) * Math.PI * 2;
+      const distance = (0.7 + Math.random() * 0.3) * maxDistance;
+      
+      // Calculate target position relative to click
+      const targetX = Math.cos(angle) * distance;
+      const targetY = Math.sin(angle) * distance;
+      
+      // Set initial position at click point
+      Object.assign(particle.style, {
+        position: 'fixed',
+        width: `${size}px`,
+        height: `${size}px`,
+        borderRadius: '50%',
+        backgroundColor: colors[Math.floor(Math.random() * colors.length)],
+        pointerEvents: 'none',
+        zIndex: '9999',
+        left: `${clientX}px`,
+        top: `${clientY}px`,
+        transform: 'translate(-50%, -50%)',
+        transition: `transform ${duration}ms cubic-bezier(0.16, 1, 0.3, 1), opacity ${duration}ms ease-out`,
+        willChange: 'transform, opacity',
+        opacity: '0.9',
+        boxShadow: '0 0 8px currentColor'
+      });
       
       document.body.appendChild(particle);
       particlesRef.current.push(particle);
       
-      const angle = Math.random() * Math.PI * 2;
-      const velocity = 1 + Math.random() * 3;
-      const vx = Math.cos(angle) * velocity;
-      const vy = Math.sin(angle) * velocity;
+      // Force a reflow
+      void particle.offsetWidth;
       
-      let opacity = 1;
-      const fade = setInterval(() => {
-        opacity -= 0.05;
-        if (opacity <= 0) {
-          clearInterval(fade);
+      // Animate to target position
+      requestAnimationFrame(() => {
+        particle.style.transform = `translate(calc(-50% + ${targetX}px), calc(-50% + ${targetY}px))`;
+        particle.style.opacity = '0';
+        
+        // Remove after animation completes
+        setTimeout(() => {
           if (particle.parentNode) {
             particle.parentNode.removeChild(particle);
             particlesRef.current = particlesRef.current.filter(p => p !== particle);
           }
-        } else {
-          const currentX = parseFloat(particle.style.left);
-          const currentY = parseFloat(particle.style.top);
-          
-          particle.style.left = `${currentX + vx}px`;
-          particle.style.top = `${currentY + vy}px`;
-          particle.style.opacity = opacity.toString();
-        }
-      }, 30);
+        }, duration);
+      });
     }
   };
   
