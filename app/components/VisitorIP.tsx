@@ -2,11 +2,11 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import CorruptedText from './CorruptedText';
 
 const VisitorIP = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [ipAddress, setIpAddress] = useState<string>('');
-  const [displayText, setDisplayText] = useState<string>('LOADING');
   const [showWelcome, setShowWelcome] = useState<boolean>(false);
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [isGlitching, setIsGlitching] = useState<boolean>(false);
@@ -18,7 +18,7 @@ const VisitorIP = () => {
     if (typeof window === 'undefined') return;
     
     try {
-      const response = await fetch('https://api64.ipify.org?format=json');
+      const response = await fetch('https://api.ipify.org?format=json');
       
       if (!response.ok) {
         throw new Error('Failed to fetch IP');
@@ -34,47 +34,11 @@ const VisitorIP = () => {
       }
       
       setIpAddress(ip);
-      
-      // Simulate decryption effect with proper IP format
-      const chars = '0123456789';
-      let counter = 0;
-      const totalIterations = 10; // Reduced iterations for faster loading
-      
-      const decryptInterval = setInterval(() => {
-        // Generate a fake IP in the correct format during loading
-        let fakeIp = '';
-        for (let i = 0; i < 4; i++) {
-          let segment = '';
-          for (let j = 0; j < 3; j++) {
-            segment += chars.charAt(Math.floor(Math.random() * chars.length));
-          }
-          fakeIp += (i < 3) ? segment + '.' : segment;
-        }
-        setDisplayText(fakeIp);
-        
-        counter++;
-        if (counter >= totalIterations) {
-          clearInterval(decryptInterval);
-          setDisplayText(ip);
-          setIsLoading(false);
-        }
-      }, 80); // Slower interval for better visibility
-      
-      // Safety timeout to ensure loading state is always cleared
-      const safetyTimeout = setTimeout(() => {
-        clearInterval(decryptInterval);
-        setDisplayText(ip);
-        setIsLoading(false);
-      }, 3000); // Reduced timeout to 3 seconds
-      
-      return () => {
-        clearInterval(decryptInterval);
-        clearTimeout(safetyTimeout);
-      };
+      setIsLoading(false);
       
     } catch (err) {
       console.error('Error fetching IP:', err);
-      setDisplayText('IP HIDDEN');
+      setIpAddress('IP HIDDEN');
       setIsLoading(false);
     }
   }, []);
@@ -177,7 +141,9 @@ const VisitorIP = () => {
               >
                 <span>Welcome</span>
                 <span className="font-bold">
-                  {ipAddress || displayText}
+                  {isLoading 
+                    ? <CorruptedText text="CONNECTING..." intervalDuration={50} /> 
+                    : ipAddress}
                 </span>
                 <motion.span
                   className="inline-block"
