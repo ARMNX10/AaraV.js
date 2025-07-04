@@ -264,17 +264,20 @@ export default function Projects() {
                       animate={inView ? { opacity: 1, y: 0 } : {}}
                       transition={{ delay: 1.8 + index * 0.2 }}
                     >
-                      <motion.a
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`flex items-center gap-2 px-6 py-3 rounded-lg border ${colorClasses.border} ${colorClasses.text} hover:bg-gray-800/50 transition-all duration-300 font-medium`}
-                        whileHover={{ scale: 1.05, y: -2 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        <Github className="w-5 h-5" />
-                        View Code
-                      </motion.a>
+                        <div className="relative" style={{ zIndex: 10 }}>
+                        <motion.a
+                          href={project.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`flex items-center gap-2 px-6 py-3 rounded-lg border ${colorClasses.border} ${colorClasses.text} hover:bg-gray-800/50 transition-all duration-300 font-medium relative`}
+                          style={{ zIndex: 20, pointerEvents: 'auto' }}
+                          whileHover={{ scale: 1.05, y: -2 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          <Github className="w-5 h-5" />
+                          View Code
+                        </motion.a>
+                      </div>
                     </motion.div>
                   </div>
                 </motion.div>
@@ -292,17 +295,20 @@ export default function Projects() {
             <p className="text-gray-400 mb-6">
               Interested in seeing more of my work?
             </p>
-            <motion.a
-              href="https://github.com/ARMNX10"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-secondary flex items-center gap-2 mx-auto w-fit"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Github className="w-5 h-5" />
-              View All Projects on GitHub
-            </motion.a>
+            <div className="relative" style={{ zIndex: 10 }}>
+              <motion.a
+                href="https://github.com/ARMNX10"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-secondary flex items-center gap-2 mx-auto w-fit relative"
+                style={{ zIndex: 20, pointerEvents: 'auto' }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Github className="w-5 h-5" />
+                View All Projects on GitHub
+              </motion.a>
+            </div>
           </motion.div>
         </motion.div>
       </div>

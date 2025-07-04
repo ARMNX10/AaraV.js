@@ -98,7 +98,7 @@ const VisitorIP = () => {
       clearInterval(glitchInterval);
       setIsGlitching(false);
       setIsHovered(false);
-    }, 800);
+    }, 400);
   };
 
   if (error) {
@@ -124,23 +124,21 @@ const VisitorIP = () => {
           >
             <div className="flex flex-col items-center">
               <motion.div 
-                className={`text-lg md:text-xl font-mono flex items-center gap-2 ${
-                  isLoading 
-                    ? (isLoadingColor ? 'text-blue-400' : 'text-red-400')
-                    : 'text-green-400/70'
-                } transition-colors duration-500 ${
-                  isGlitching ? 'text-red-400' : ''
-                } ${
-                  isHovered && !isLoading ? 'blur-0 scale-110' : 'blur-sm scale-100'
-                } drop-shadow-[0_0_8px_rgba(74,222,128,0.3)]`}
+                className="font-mono flex items-baseline gap-4 text-2xl md:text-4xl group"
                 style={{
                   transition: isGlitching ? 'all 0.1s linear' : 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                   transform: isGlitching ? 'translateX(0)' : '',
                   animation: isGlitching ? 'glitch 0.1s infinite' : 'none'
                 }}
               >
-                <span>Welcome</span>
-                <span className="font-bold">
+                <span className="text-white">Welcome</span>
+                <span className={`font-bold ${isLoading 
+                  ? (isLoadingColor ? 'text-blue-400' : 'text-red-400')
+                  : 'text-green-400/70'} ${
+                  isGlitching ? 'text-red-400' : ''
+                } ${
+                  isHovered && !isLoading ? 'blur-0 scale-110' : 'blur-md scale-100'
+                } drop-shadow-[0_0_8px_rgba(74,222,128,0.3)]`}>
                   {isLoading 
                     ? <CorruptedText text="CONNECTING..." intervalDuration={50} /> 
                     : ipAddress}
@@ -157,7 +155,7 @@ const VisitorIP = () => {
                     ease: 'easeInOut'
                   }}
                 >
-                  ;)
+                  {isHovered && !isLoading ? ';)' : ':|'}
                 </motion.span>
               </motion.div>
               

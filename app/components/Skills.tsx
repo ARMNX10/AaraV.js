@@ -287,21 +287,48 @@ export default function Skills() {
                 ))}
               </div>
 
-              {/* Extra Curricular Highlight */}
+              {/* Leadership & Community */}
               <motion.div
                 className="mt-6 p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg"
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={inView ? { opacity: 1, scale: 1 } : {}}
                 transition={{ delay: 1.8 }}
               >
-                <h4 className="text-white font-semibold mb-2 flex items-center gap-2">
-                  <Globe className="w-4 h-4 text-blue-400" />
-                  Leadership & Community
-                </h4>
-                <p className="text-gray-400 text-sm">
+                <div className="flex justify-between items-start mb-2">
+                  <h4 className="text-white font-semibold flex items-center gap-2">
+                    <Globe className="w-4 h-4 text-blue-400" />
+                    Leadership & Community
+                  </h4>
+                  <motion.a
+                    href="https://drive.google.com/file/d/1AWulbWBss5SEor6m-LGqsMJWyceBk_de/view"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1 border border-blue-400/30 px-2 py-1 rounded-md hover:bg-blue-500/20 transition-colors"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Award className="w-3 h-3" />
+                    View Certificate
+                  </motion.a>
+                </div>
+                <p className="text-gray-400 text-sm mb-3">
                   Management Head at Innovator's Quest Club, organizing events and developing 
                   community engagement tools for 100+ members.
                 </p>
+                <ul className="text-gray-400 text-xs space-y-1.5">
+                  <li className="flex items-start gap-2">
+                    <span className="text-blue-400 mt-0.5">•</span>
+                    <span>Led technical workshops and hackathons for 100+ students</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-blue-400 mt-0.5">•</span>
+                    <span>Mentored junior developers in open-source contributions</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-blue-400 mt-0.5">•</span>
+                    <span>Active member of AI/ML and developer communities</span>
+                  </li>
+                </ul>
               </motion.div>
             </motion.div>
           </div>
