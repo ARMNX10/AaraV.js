@@ -131,7 +131,13 @@ const VisitorIP = () => {
                   animation: isGlitching ? 'glitch 0.1s infinite' : 'none'
                 }}
               >
-                <span className="text-white">Welcome</span>
+                <span className={`font-bold ${isLoading 
+                  ? (isLoadingColor ? 'text-blue-400' : 'text-red-400')
+                  : 'text-green-400/70'} ${
+                  isGlitching ? 'text-red-400' : ''
+                }`}>
+                  Welcome
+                </span>
                 <span className={`font-bold ${isLoading 
                   ? (isLoadingColor ? 'text-blue-400' : 'text-red-400')
                   : 'text-green-400/70'} ${
@@ -144,7 +150,11 @@ const VisitorIP = () => {
                     : ipAddress}
                 </span>
                 <motion.span
-                  className="inline-block"
+                  className={`inline-block ${isLoading 
+                    ? (isLoadingColor ? 'text-blue-400' : 'text-red-400')
+                    : 'text-green-400/70'} ${
+                    isGlitching ? 'text-red-400' : ''
+                  }`}
                   animate={{ 
                     opacity: [0.2, 1, 0.2],
                     scale: [1, 1.2, 1]
